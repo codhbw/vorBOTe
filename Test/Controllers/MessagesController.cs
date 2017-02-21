@@ -23,7 +23,7 @@ namespace Test
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new DruckerDialog());
+                await Conversation.SendAsync(activity, () => new EinfuehrungsDialog());
             }
             else
             {
