@@ -26,6 +26,7 @@ namespace Test.Dialogs
         [LuisIntent("Einstieg")]
         public async Task Einstieg(IDialogContext context, LuisResult result)
         {
+            EinfuehrungsDialog.getEntities(context, result);
             String frageart = "Frageart";
             String objekt = "Objekt";
             EntityRecommendation frageartEntity;
@@ -38,6 +39,7 @@ namespace Test.Dialogs
                                     SelectFrageart,
                                     fragearten,
                                     "Was ist dein Anliegen?");
+                context.Wait(MessageReceived);
             }
             if (!result.TryFindEntity(objekt, out objektEntity))
             {
@@ -47,11 +49,16 @@ namespace Test.Dialogs
                                     SelectObjekt,
                                     objekte,
                                     "Was ist das Objekt, um das es dir geht?");
+                //context.Wait(MessageReceived);
             }
-            else
+            //context.Call<object>(new DruckerDialog(), DruckerDialogDone);
+        }
+
+        public static void getEntities(IDialogContext context, LuisResult result)
+        {
+            foreach (EntityRecommendation entity in result.Entities)
             {
-                await context.PostAsync("Wir wissen nun, warum du hier bist.");
-                context.Wait(MessageReceived);
+                context.ConversationData.SetValue<string>(entity.Type, entity.Entity);
             }
         }
 
@@ -61,12 +68,9 @@ namespace Test.Dialogs
         private async Task SelectObjekt(IDialogContext context, IAwaitable<Objekt> objekt)
         {
             var message = string.Empty;
-            var cts = new CancellationTokenSource();
             switch (await objekt)
             {
                 case Objekt.Drucker:
-                    await context.Forward(new DruckerDialog(), DruckerDialogDone, await objekt, cts.Token);
-                    break;
                 case Objekt.Browser:
                 case Objekt.BAP:
                     message = $"Du bist hier wegen: {objekt}";
@@ -75,14 +79,14 @@ namespace Test.Dialogs
                     message = "Hm...das kenne ich nicht.";
                     break;
             }
-            await context.PostAsync(message);
-            context.Wait(MessageReceived);
+            //await context.PostAsync(message);
+            //context.Wait(MessageReceived);
         }
 
-        private async Task DruckerDialogDone(IDialogContext context, IAwaitable<object> result)
+        private Task DruckerDialogDone(IDialogContext context, IAwaitable<object> result)
         {
-            await context.PostAsync("Super");
             context.Wait(MessageReceived);
+            return null;
         }
 
         private async Task SelectFrageart(IDialogContext context, IAwaitable<Frageart> frageart)
@@ -93,49 +97,6 @@ namespace Test.Dialogs
                 case Frageart.Incident:
                 case Frageart.ServiceRequest:
                     message = $"Du bist hier wegen: {frageart}";
-                    break;
-                default:
-                    message = $"Hm...mit diesem Problem kann ich dir leider nicht behilflich sein.";
-                    break;
-            }
-            await context.PostAsync(message);
-            context.Wait(MessageReceived);
-        }
-
-        enum Problemkategorie { Technik, Aktiv, Passiv, Meldewesen, Zahlungsverkehr };
-
-        [LuisIntent("Problem")]
-        public async Task Problem(IDialogContext context, LuisResult result)
-        {
-            String kategorie = "Problemkategorie";
-            EntityRecommendation problemkategorie;
-            if (!result.TryFindEntity(kategorie, out problemkategorie))
-            {
-                var problemkategorien = (IEnumerable<Problemkategorie>)Enum.GetValues(typeof(Problemkategorie));
-
-                PromptDialog.Choice(context,
-                                    SelectProblemDialog,
-                                    problemkategorien,
-                                    "In welche Kategorie würdest du dein Problem einordnen?");
-            }
-            else
-            {
-                await context.PostAsync($"Wir konnten dein Problem einer unserer Kategorien zuordnen.");
-                context.Wait(MessageReceived);
-            }
-        }
-
-        private async Task SelectProblemDialog(IDialogContext context, IAwaitable<Problemkategorie> problemkategorie)
-        {
-            var message = string.Empty;
-            switch (await problemkategorie)
-            {
-                case Problemkategorie.Technik:
-                case Problemkategorie.Aktiv:
-                case Problemkategorie.Passiv:
-                case Problemkategorie.Meldewesen:
-                case Problemkategorie.Zahlungsverkehr:
-                    message = $"Scheinbar hast du ein Problem mit: {problemkategorie}";
                     break;
                 default:
                     message = $"Hm...mit diesem Problem kann ich dir leider nicht behilflich sein.";

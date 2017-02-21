@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Test.Dialogs
 {
-    [LuisModel("6352092e-aac3-4ba6-b1e5-0a6d4f8925b5", "1b98be32a28e4190af249eb8e1ac73cd")]
+    [LuisModel("2fd2215e-c2c6-4f37-b1ee-a42a00f63f5f", "4f3468354b6246a9a5a8c0d3ace44ff5")]
     [Serializable]
     public class DruckerDialog : LuisDialog<object>
     {
@@ -43,6 +43,7 @@ namespace Test.Dialogs
                 await context.PostAsync($"Druckerproblem ist jetzt behoben.");
                 context.Wait(MessageReceived);
             }
+            context.Done(true);
         }
 
         private async Task SelectAnschlussTyp(IDialogContext context, IAwaitable<AnschlussTyp> anschlussTyp)
