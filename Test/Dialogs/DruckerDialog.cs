@@ -36,7 +36,7 @@ namespace Test.Dialogs
                 PromptDialog.Choice(context,
                                     SelectAnschlussTyp,
                                     anschlussTypen,
-                                    "Welcher Anschlusstyp hat der Drucker?");
+                                    "Wie ist der Drucker an den Arbeitsplatz angebunden?");
             }
             else
             {
@@ -52,13 +52,13 @@ namespace Test.Dialogs
             switch (await anschlussTyp)
             {
                 case AnschlussTyp.Lokal:
-                    message = $"Anschlusstyp {anschlussTyp} is ";
+                    message = $"Anschlusstyp ist {anschlussTyp}";
                     break;
                 case AnschlussTyp.Netzwerk:
-                    message = $"Anschlusstyp {anschlussTyp} is ";
+                    message = $"Anschlusstyp ist {anschlussTyp}";
                     break;
                 default:
-                    message = $"Sorry!! Ich kenne den Anschlusstyp {anschlussTyp} nicht!";
+                    message = $"Sorry!! Den Anschlusstyp {anschlussTyp} kenne ich nicht!";
                     break;
             }
             await context.PostAsync(message);
