@@ -26,7 +26,7 @@ namespace Test.Dialogs
         [LuisIntent("Einstieg")]
         public async Task Einstieg(IDialogContext context, LuisResult result)
         {
-            EinfuehrungsDialog.getEntities(context, result);
+            if (result != null) EinfuehrungsDialog.getEntities(context, result);
             String frageart = "Frageart";
             String objekt = "Objekt";
             EntityRecommendation frageartEntity; 
@@ -51,11 +51,11 @@ namespace Test.Dialogs
             }
             else
             {
-                Fertig(context);
+                await Fertig(context);
             }
         }
 
-        protected async void Fertig(IDialogContext context)
+        protected async Task Fertig(IDialogContext context)
         {
             // We have all infos, now let's go into the detailed dialog
             if (context.ConversationData.Get<string>("objekt") == "drucker")
@@ -94,6 +94,7 @@ namespace Test.Dialogs
                     break;
             }
             await context.PostAsync(message);
+            
             await Fertig(context);
             //context.Wait(MessageReceived);
         }
