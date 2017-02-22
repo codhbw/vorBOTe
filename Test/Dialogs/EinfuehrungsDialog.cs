@@ -62,7 +62,7 @@ namespace Test.Dialogs
             // We have all infos, now let's go into the detailed dialog
             if (context.ConversationData.Get<string>("objekt") == "drucker")
             {
-                await context.PostAsync("Kannst du dein Drucker Problem näher beschreiben?");
+                await context.PostAsync("Kannst du dein Druckerproblem näher beschreiben?");
 
                 //var myform = new FormDialog<DruckerForm>(new DruckerForm(), DruckerForm.BuildForm, FormOptions.PromptInStart, null, new CultureInfo("de-DE"));
                 //context.Call<DruckerForm>(myform, DruckerDialogDone);
@@ -80,7 +80,7 @@ namespace Test.Dialogs
             switch (await objekt)
             {
                 case Objekt.Drucker:
-                    message = $"Ah versthe, Du bist hier wegen eines schlecht gelaunten Druckers.";
+                    message = $"Ah verstehe, Du bist hier wegen eines schlecht gelaunten Druckers.";
                     context.ConversationData.SetValue<string>("objekt", "drucker");
                     break;
                 case Objekt.Browser:
