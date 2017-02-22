@@ -6,6 +6,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using System.Threading.Tasks;
+using Microsoft.Bot.Connector;
 
 namespace Test.Dialogs
 {
@@ -143,21 +144,64 @@ namespace Test.Dialogs
 
         private async Task SelectAnwendung(IDialogContext context, IAwaitable<Anwendung> anwendung)
         {
-            var message = string.Empty;
+            IMessageActivity msg = context.MakeMessage();
+            msg.Type = "message";
+            msg.Attachments = new List<Attachment>();
+            List<CardImage> cardImages = new List<CardImage>();
+            List<CardAction> cardButtons = new List<CardAction>();
+            CardAction plButton = null;
+            HeroCard plCard = null;
             switch (await anwendung)
             {
                 case Anwendung.Office:
                     context.ConversationData.SetValue<string>("anwendung", "office");
+
+                    cardImages.Add(new CardImage(url: "https://uqzqqq-bn1305.files.1drv.com/y3pR8K3P3Qdr7gkcPmrE_rSyVHYuOQ4-Azt_4fEA4fp4K8pSclujdIV4JGrbRtj-zMY9ADPJikimo7xQqam6ZYFQkurm-wVd-eCUUo2-baqNt-WcAu5HXusFrSmUFGCh94wsJbkLNGSHSXmTW2tzS1rIQ/Drucken%20MS%20Office.jpg?psid=1"));
+
+                    plButton = new CardAction()
+                    {
+                        Value = "https://1drv.ms/b/s!AsBP--kaOJEKgfBlOHEU36x3VwMG8A",
+                        Type = "openUrl",
+                        Title = "Zur Anleitung"
+                    };
+
+                    plCard = new HeroCard()
+                    {
+                        Title = "Office Beidseitigdrucken",
+                        Subtitle = "Beschreibung wie man im Office das Beidseitigdrucken einstellt.",
+                        Images = cardImages,
+                        Buttons = cardButtons
+                    };
                     break;
                 case Anwendung.Windows:
                     context.ConversationData.SetValue<string>("anwendung", "windows");
-                    message = $"Anwendung ist {anwendung}";
+
+                    cardImages.Add(new CardImage(url: "https://uqzqqq-bn1305.files.1drv.com/y3pR8K3P3Qdr7gkcPmrE_rSyVHYuOQ4-Azt_4fEA4fp4K8pSclujdIV4JGrbRtj-zMY9ADPJikimo7xQqam6ZYFQkurm-wVd-eCUUo2-baqNt-WcAu5HXusFrSmUFGCh94wsJbkLNGSHSXmTW2tzS1rIQ/Drucken%20MS%20Office.jpg?psid=1"));
+
+                    plButton = new CardAction()
+                    {
+                        Value = "https://1drv.ms/b/s!AsBP--kaOJEKgfBlOHEU36x3VwMG8A",
+                        Type = "openUrl",
+                        Title = "Zur Anleitung"
+                    };
+
+                    plCard = new HeroCard()
+                    {
+                        Title = "Windows-Anwendungen Beidseitigdrucken",
+                        Subtitle = "Beschreibung wie man in Windows-Anwendungen das Beidseitigdrucken einstellt.",
+                        Images = cardImages,
+                        Buttons = cardButtons
+                    };
                     break;
                 default:
-                    message = $"Sorry!! Di Anwendung {anwendung} kenne ich nicht!";
                     break;
             }
-            await context.PostAsync(message);
+            cardButtons.Add(plButton);
+
+            Attachment plAttachment = plCard.ToAttachment();
+            msg.Attachments.Add(plAttachment);
+
+            await context.PostAsync(msg);
             context.Wait(MessageReceived);
         }
 
