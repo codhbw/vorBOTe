@@ -96,7 +96,6 @@ namespace Test.Dialogs
             await context.PostAsync(message);
             
             await Fertig(context);
-            //context.Wait(MessageReceived);
         }
 
         private Task DruckerDialogDone(IDialogContext context, IAwaitable<object> result)
