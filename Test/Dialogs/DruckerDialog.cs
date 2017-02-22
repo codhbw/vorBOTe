@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace Test.Dialogs
 {
+    enum AnschlussTyp { Lokal, Netzwerk };
+    enum Problemtyp { Duplex, Fehlercode};
+    enum Anwendung { Office, Windows};
+
     [LuisModel("2fd2215e-c2c6-4f37-b1ee-a42a00f63f5f", "4f3468354b6246a9a5a8c0d3ace44ff5")]
     [Serializable]
     public class DruckerDialog : LuisDialog<object>
@@ -21,8 +25,6 @@ namespace Test.Dialogs
             await context.PostAsync(message);
             context.Wait(MessageReceived);
         }
-
-        enum AnschlussTyp { Lokal, Netzwerk };
 
 
         [LuisIntent("PrinterSupport")]
