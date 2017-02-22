@@ -7,6 +7,7 @@ using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using System.Threading.Tasks;
 using System.Threading;
+using Microsoft.Bot.Builder.FormFlow;
 
 namespace Test.Dialogs
 {
@@ -61,7 +62,10 @@ namespace Test.Dialogs
             if (context.ConversationData.Get<string>("objekt") == "drucker")
             {
                 await context.PostAsync("Kannst du dein Drucker Problem näher beschreiben?");
-                context.Call<object>(new DruckerDialog(), DruckerDialogDone);
+                var myform = new FormDialog<DruckerForm>(new DruckerForm(), DruckerForm.BuildForm, FormOptions.PromptInStart, null);
+
+                context.Call<DruckerForm>(myform, DruckerDialogDone);
+                //context.Call<object>(new DruckerDialog(), DruckerDialogDone);
             }
         }
 

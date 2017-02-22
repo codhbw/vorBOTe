@@ -6,13 +6,15 @@ using Microsoft.Bot.Builder.FormFlow;
 
 namespace Test.Dialogs
 {
-    public enum Anschluss { Lokal, Netzwerk };
+    public enum Anschlusstyp { Lokal, Netzwerk };
     public enum Problem { Duplex, Fehlercode };
 
     [Serializable]
     public class DruckerForm
     {
-        public Anschluss? anschlusstyp;
+        [Prompt("Welchen Anschlusstypen hat der Drucker? {||}")]
+        public Anschlusstyp? anschlusstyp;
+        [Prompt("Was für ein Problem hast du mit dem Drucker? {||}")]
         public Problem? problem;
 
         public static IForm<DruckerForm> BuildForm()
