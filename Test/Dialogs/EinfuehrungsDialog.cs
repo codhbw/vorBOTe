@@ -33,16 +33,16 @@ namespace Test.Dialogs
             String objekt = "Objekt";
             EntityRecommendation frageartEntity; 
             EntityRecommendation objektEntity;
-            if (!result.TryFindEntity(frageart, out frageartEntity))
-            {
-                var fragearten = (IEnumerable<Frageart>)Enum.GetValues(typeof(Frageart));
+            //if (!result.TryFindEntity(frageart, out frageartEntity))
+            //{
+            //    var fragearten = (IEnumerable<Frageart>)Enum.GetValues(typeof(Frageart));
 
-                PromptDialog.Choice(context,
-                                    SelectFrageart,
-                                    fragearten,
-                                    "Was ist dein Anliegen?");
-            }
-            else if (!result.TryFindEntity(objekt, out objektEntity))
+            //    PromptDialog.Choice(context,
+            //                        SelectFrageart,
+            //                        fragearten,
+            //                        "Was ist dein Anliegen?");
+            //}
+            if (!result.TryFindEntity(objekt, out objektEntity))
             {
                 var objekte = (IEnumerable<Objekt>)Enum.GetValues(typeof(Objekt));
 

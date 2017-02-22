@@ -7,6 +7,7 @@ using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using System.Threading.Tasks;
 using Microsoft.Bot.Connector;
+using System.Net.Http;
 
 namespace Test.Dialogs
 {
@@ -69,6 +70,10 @@ namespace Test.Dialogs
                                     anwendungen,
                                     "Aus welcher Anwendung kannst du nicht drucken?");
             }
+            else if (Problemtyp.Fehlercode.ToString().ToLower().Equals(problem))
+            {
+                await serviceHilfe(context);
+            }
             //context.Done(true);
         }
 
@@ -124,6 +129,7 @@ namespace Test.Dialogs
                     break;
                 case Problemtyp.Fehlercode:
                     context.ConversationData.SetValue<string>("problemtyp", "fehlercode");
+                    await serviceHilfe(context);
                     break;
                 default:
                     message = $"Sorry!! Den Problemtyp {problemtyp} kenne ich nicht!";
@@ -202,6 +208,15 @@ namespace Test.Dialogs
             msg.Attachments.Add(plAttachment);
 
             await context.PostAsync(msg);
+            context.Wait(MessageReceived);
+        }
+
+        async Task serviceHilfe(IDialogContext context)
+        {
+            System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
+            HttpContent content = new StringContent("Ticket 0038052: Netzwerkdrucker liefert Fehlercode.");
+            await client.PostAsync("https://prod-13.northeurope.logic.azure.com:443/workflows/a0323b2e06fe49ce96d66677c53f1402/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nWmc56Qfr7C8jx2_3mrRNm_sk_3K8ww2srrsoFVrNE4", content);
+            await context.PostAsync("Das Problem wird an einen unserer freundlichen Support-Mitarbeiter weitergeleitet :)");
             context.Wait(MessageReceived);
         }
 
