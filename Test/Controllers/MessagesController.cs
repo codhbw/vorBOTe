@@ -23,11 +23,12 @@ namespace Test
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new EinfuehrungsDialog());
+                await Conversation.SendAsync(activity, () => new WillkommensDialog());
             }
             else
             {
                 //add code to handle errors, or non-messaging activities
+                HandleSystemMessage(activity);
             }
 
             return new HttpResponseMessage(System.Net.HttpStatusCode.Accepted);
@@ -42,9 +43,24 @@ namespace Test
             }
             else if (message.Type == ActivityTypes.ConversationUpdate)
             {
-                // Handle conversation state changes, like members being added and removed
-                // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
-                // Not available in all channels
+                var client = new ConnectorClient(new Uri(message.ServiceUrl));
+                IConversationUpdateActivity update = message;
+                if (update.MembersAdded.Any())
+                {
+                    var reply = message.CreateReply();
+                    var newMembers = update.MembersAdded?.Where(t => t.Id != message.Recipient.Id);
+                    foreach (var newMember in newMembers)
+                    {
+                        reply.Text = "Willkommen beim vorBOTe! Wie heißt Du?";
+                        //if (!string.IsNullOrEmpty(newMember.Name))
+                        //{
+                        //    reply.Text += $" {newMember.Name}";
+                        //}
+                        //reply.Text += "!";
+
+                        client.Conversations.ReplyToActivityAsync(reply);
+                    }
+                }
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
