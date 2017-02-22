@@ -1,0 +1,14 @@
+
+Bot handle:
+vorBOTe
+
+App-ID
+c36f7e72-79ff-4dc1-a8b9-c949136e7736
+
+Kennwort: b40niDmecNtjfqpCDiekkui
+
+Link zu WebChat:
+https://webchat.botframework.com/embed/vorBOTe?s=K6scQu93V7w.cwA.UpI.FaMnQPdcZ0m-bwo-aJzjn73VGGpxIzC4c9FGY7twGGQ
+
+Secret Key WebSite:
+K6scQu93V7w.cwA.UpI.FaMnQPdcZ0m-bwo-aJzjn73VGGpxIzC4c9FGY7twGGQ
