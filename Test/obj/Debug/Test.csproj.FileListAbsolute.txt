@@ -1,0 +1,38 @@
+C:\git\vorBOTe_real\Test\bin\Bot Application1.dll.config
+C:\git\vorBOTe_real\Test\bin\Bot Application1.dll
+C:\git\vorBOTe_real\Test\bin\Bot Application1.pdb
+C:\git\vorBOTe_real\Test\bin\Autofac.dll
+C:\git\vorBOTe_real\Test\bin\Chronic.dll
+C:\git\vorBOTe_real\Test\bin\Microsoft.Bot.Builder.dll
+C:\git\vorBOTe_real\Test\bin\Microsoft.Bot.Connector.dll
+C:\git\vorBOTe_real\Test\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+C:\git\vorBOTe_real\Test\bin\Microsoft.Rest.ClientRuntime.dll
+C:\git\vorBOTe_real\Test\bin\Microsoft.WindowsAzure.Configuration.dll
+C:\git\vorBOTe_real\Test\bin\Newtonsoft.Json.dll
+C:\git\vorBOTe_real\Test\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\git\vorBOTe_real\Test\bin\System.Net.Http.Formatting.dll
+C:\git\vorBOTe_real\Test\bin\System.Web.Http.dll
+C:\git\vorBOTe_real\Test\bin\System.Web.Http.WebHost.dll
+C:\git\vorBOTe_real\Test\bin\Autofac.xml
+C:\git\vorBOTe_real\Test\bin\Microsoft.Bot.Builder.xml
+C:\git\vorBOTe_real\Test\bin\Microsoft.Bot.Connector.xml
+C:\git\vorBOTe_real\Test\bin\Microsoft.IdentityModel.Protocol.Extensions.pdb
+C:\git\vorBOTe_real\Test\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+C:\git\vorBOTe_real\Test\bin\Microsoft.Rest.ClientRuntime.xml
+C:\git\vorBOTe_real\Test\bin\Microsoft.WindowsAzure.Configuration.xml
+C:\git\vorBOTe_real\Test\bin\Newtonsoft.Json.xml
+C:\git\vorBOTe_real\Test\bin\System.IdentityModel.Tokens.Jwt.pdb
+C:\git\vorBOTe_real\Test\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\git\vorBOTe_real\Test\bin\System.Net.Http.Formatting.xml
+C:\git\vorBOTe_real\Test\bin\System.Web.Http.xml
+C:\git\vorBOTe_real\Test\bin\System.Web.Http.WebHost.xml
+C:\git\vorBOTe_real\Test\bin\ar\Microsoft.Bot.Builder.resources.dll
+C:\git\vorBOTe_real\Test\bin\en\Microsoft.Bot.Builder.resources.dll
+C:\git\vorBOTe_real\Test\bin\es\Microsoft.Bot.Builder.resources.dll
+C:\git\vorBOTe_real\Test\bin\fa\Microsoft.Bot.Builder.resources.dll
+C:\git\vorBOTe_real\Test\bin\fr\Microsoft.Bot.Builder.resources.dll
+C:\git\vorBOTe_real\Test\bin\ja\Microsoft.Bot.Builder.resources.dll
+C:\git\vorBOTe_real\Test\bin\ru\Microsoft.Bot.Builder.resources.dll
+C:\git\vorBOTe_real\Test\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
+C:\git\vorBOTe_real\Test\obj\Debug\Bot Application1.dll
+C:\git\vorBOTe_real\Test\obj\Debug\Bot Application1.pdb
