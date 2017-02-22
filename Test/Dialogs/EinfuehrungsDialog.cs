@@ -8,6 +8,7 @@ using Microsoft.Bot.Builder.Luis.Models;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.Bot.Builder.FormFlow;
+using System.Globalization;
 
 namespace Test.Dialogs
 {
@@ -27,7 +28,7 @@ namespace Test.Dialogs
         [LuisIntent("Einstieg")]
         public async Task Einstieg(IDialogContext context, LuisResult result)
         {
-            if (result != null) EinfuehrungsDialog.getEntities(context, result);
+            if (result != null) Helper.getEntities(context, result);
             String frageart = "Frageart";
             String objekt = "Objekt";
             EntityRecommendation frageartEntity; 
@@ -62,18 +63,11 @@ namespace Test.Dialogs
             if (context.ConversationData.Get<string>("objekt") == "drucker")
             {
                 await context.PostAsync("Kannst du dein Drucker Problem näher beschreiben?");
-                var myform = new FormDialog<DruckerForm>(new DruckerForm(), DruckerForm.BuildForm, FormOptions.PromptInStart, null);
 
-                context.Call<DruckerForm>(myform, DruckerDialogDone);
-                //context.Call<object>(new DruckerDialog(), DruckerDialogDone);
-            }
-        }
+                //var myform = new FormDialog<DruckerForm>(new DruckerForm(), DruckerForm.BuildForm, FormOptions.PromptInStart, null, new CultureInfo("de-DE"));
+                //context.Call<DruckerForm>(myform, DruckerDialogDone);
 
-        public static void getEntities(IDialogContext context, LuisResult result)
-        {
-            foreach (EntityRecommendation entity in result.Entities)
-            {
-                context.ConversationData.SetValue<string>(entity.Type.ToLower(), entity.Entity.ToLower());
+                context.Call<object>(new DruckerDialog(), DruckerDialogDone);
             }
         }
 
