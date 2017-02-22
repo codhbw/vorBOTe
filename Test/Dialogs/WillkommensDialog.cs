@@ -19,11 +19,21 @@ namespace Test.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
             var message = await argument;
+            List<string> halloStrings = new List<string>() { "hallo", "hallo!", "hello", "hello!", "hi", "hi!" };
 
-            context.ConversationData.SetValue<string>("benutzername", message.Text);
-            await context.PostAsync($"Willkommen {message.Text}!");
-            await context.PostAsync("Was für ein Problem hast du?");
-            context.Call<object>(new EinfuehrungsDialog(), DialogDone);
+            if (halloStrings.Contains(message.Text.ToLower()))
+            {
+                await context.PostAsync("Hallo! Wie heißt du genau?");
+                context.Wait(MessageReceivedAsync);
+            }
+            else
+            {
+                context.ConversationData.SetValue<string>("benutzername", message.Text);
+                await context.PostAsync($"Willkommen {message.Text}!");
+
+                await context.PostAsync("Was für ein Problem hast du?");
+                context.Call<object>(new EinfuehrungsDialog(), DialogDone);
+            }
         }
 
         private async Task DialogDone(IDialogContext context, IAwaitable<object> result)

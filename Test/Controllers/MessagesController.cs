@@ -28,13 +28,13 @@ namespace Test
             else
             {
                 //add code to handle errors, or non-messaging activities
-                HandleSystemMessage(activity);
+                await HandleSystemMessage(activity);
             }
 
             return new HttpResponseMessage(System.Net.HttpStatusCode.Accepted);
         }
 
-        private Activity HandleSystemMessage(Activity message)
+        private async Task HandleSystemMessage(Activity message)
         {
             if (message.Type == ActivityTypes.DeleteUserData)
             {
@@ -58,7 +58,7 @@ namespace Test
                         //}
                         //reply.Text += "!";
 
-                        client.Conversations.ReplyToActivityAsync(reply);
+                        await client.Conversations.ReplyToActivityAsync(reply);
                     }
                 }
             }
@@ -75,7 +75,7 @@ namespace Test
             {
             }
 
-            return null;
+            return;
         }
     }
 }
