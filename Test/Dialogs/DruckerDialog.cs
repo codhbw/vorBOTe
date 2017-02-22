@@ -34,6 +34,7 @@ namespace Test.Dialogs
             String anschlussTyp;
             String problem;
             String anwendung;
+            context.ConversationData.TryGetValue<string>("problemtyp", out problem);
             if (!context.ConversationData.TryGetValue<string>("anschlusstyp", out anschlussTyp))
             {
                 var anschlussTypen = (IEnumerable<AnschlussTyp>)Enum.GetValues(typeof(AnschlussTyp));
@@ -57,7 +58,7 @@ namespace Test.Dialogs
                                     problemtypen,
                                     "Welches Problem hast du mit dem Drucker?");
             }
-            else if (Problemtyp.Duplex.ToString().Equals(context.ConversationData.TryGetValue<string>("problemtyp", out problem))
+            else if (Problemtyp.Duplex.ToString().ToLower().Equals(problem)
                 && !context.ConversationData.TryGetValue<string>("anwendung", out anwendung))
             {
                 var anwendungen = (IEnumerable<Anwendung>)Enum.GetValues(typeof(Anwendung));
@@ -72,38 +73,72 @@ namespace Test.Dialogs
 
         private async Task SelectAnschlussTyp(IDialogContext context, IAwaitable<AnschlussTyp> anschlussTyp)
         {
+            String problem;
+            String anwendung;
             var message = string.Empty;
+            context.ConversationData.TryGetValue<string>("problemtyp", out problem);
             switch (await anschlussTyp)
             {
                 case AnschlussTyp.Lokal:
+                    context.ConversationData.SetValue<string>("anschlusstyp", "lokal");
+                    break;
                 case AnschlussTyp.Netzwerk:
-                    context.ConversationData.SetValue<string>("anschlusstyp", anschlussTyp.ToString());
+                    context.ConversationData.SetValue<string>("anschlusstyp", "netzwerk");
                     message = $"Anschlusstyp ist {anschlussTyp}";
                     break;
                 default:
                     message = $"Sorry!! Den Anschlusstyp {anschlussTyp} kenne ich nicht!";
                     break;
             }
-            await context.PostAsync(message);
-            context.Wait(MessageReceived);
+            if (!context.ConversationData.TryGetValue<string>("problemtyp", out problem))
+            {
+                var problemtypen = (IEnumerable<Problemtyp>)Enum.GetValues(typeof(Problemtyp));
+
+                PromptDialog.Choice(context,
+                                    SelectProblemtyp,
+                                    problemtypen,
+                                    "Welches Problem hast du mit dem Drucker?");
+            }
+            else if (Problemtyp.Duplex.ToString().ToLower().Equals(problem)
+                && !context.ConversationData.TryGetValue<string>("anwendung", out anwendung))
+            {
+                var anwendungen = (IEnumerable<Anwendung>)Enum.GetValues(typeof(Anwendung));
+
+                PromptDialog.Choice(context,
+                                    SelectAnwendung,
+                                    anwendungen,
+                                    "Aus welcher Anwendung kannst du nicht drucken?");
+            }
         }
 
         private async Task SelectProblemtyp(IDialogContext context, IAwaitable<Problemtyp> problemtyp)
         {
+            String problem;
+            String anwendung;
             var message = string.Empty;
             switch (await problemtyp)
             {
                 case Problemtyp.Duplex:
+                    context.ConversationData.SetValue<string>("problemtyp", "duplex");
+                    break;
                 case Problemtyp.Fehlercode:
-                    context.ConversationData.SetValue<string>("problemtyp", problemtyp.ToString());
-                    message = $"Problemtyp ist {problemtyp}";
+                    context.ConversationData.SetValue<string>("problemtyp", "fehlercode");
                     break;
                 default:
                     message = $"Sorry!! Den Problemtyp {problemtyp} kenne ich nicht!";
                     break;
             }
-            await context.PostAsync(message);
-            context.Wait(MessageReceived);
+            context.ConversationData.TryGetValue<string>("problemtyp", out problem);
+            if (Problemtyp.Duplex.ToString().ToLower().Equals(problem)
+                && !context.ConversationData.TryGetValue<string>("anwendung", out anwendung))
+            {
+                var anwendungen = (IEnumerable<Anwendung>)Enum.GetValues(typeof(Anwendung));
+
+                PromptDialog.Choice(context,
+                                    SelectAnwendung,
+                                    anwendungen,
+                                    "Aus welcher Anwendung kannst du nicht drucken?");
+            }
         }
 
         private async Task SelectAnwendung(IDialogContext context, IAwaitable<Anwendung> anwendung)
@@ -112,8 +147,10 @@ namespace Test.Dialogs
             switch (await anwendung)
             {
                 case Anwendung.Office:
+                    context.ConversationData.SetValue<string>("anwendung", "office");
+                    break;
                 case Anwendung.Windows:
-                    context.ConversationData.SetValue<string>("anwendung", anwendung.ToString());
+                    context.ConversationData.SetValue<string>("anwendung", "windows");
                     message = $"Anwendung ist {anwendung}";
                     break;
                 default:
