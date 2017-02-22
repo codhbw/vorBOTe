@@ -12,3 +12,9 @@ https://webchat.botframework.com/embed/vorBOTe?s=K6scQu93V7w.cwA.UpI.FaMnQPdcZ0m
 
 Secret Key WebSite:
 K6scQu93V7w.cwA.UpI.FaMnQPdcZ0m-bwo-aJzjn73VGGpxIzC4c9FGY7twGGQ
+
+
+Logic Link für POST Request:
+https://prod-13.northeurope.logic.azure.com:443/workflows/a0323b2e06fe49ce96d66677c53f1402/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nWmc56Qfr7C8jx2_3mrRNm_sk_3K8ww2srrsoFVrNE4
+
+POST Methode und Content als JSON
