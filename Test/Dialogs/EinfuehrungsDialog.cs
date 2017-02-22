@@ -29,7 +29,7 @@ namespace Test.Dialogs
             EinfuehrungsDialog.getEntities(context, result);
             String frageart = "Frageart";
             String objekt = "Objekt";
-            EntityRecommendation frageartEntity;
+            EntityRecommendation frageartEntity; 
             EntityRecommendation objektEntity;
             if (!result.TryFindEntity(frageart, out frageartEntity))
             {
@@ -39,9 +39,8 @@ namespace Test.Dialogs
                                     SelectFrageart,
                                     fragearten,
                                     "Was ist dein Anliegen?");
-                context.Wait(MessageReceived);
             }
-            if (!result.TryFindEntity(objekt, out objektEntity))
+            else if (!result.TryFindEntity(objekt, out objektEntity))
             {
                 var objekte = (IEnumerable<Objekt>)Enum.GetValues(typeof(Objekt));
 
@@ -49,16 +48,28 @@ namespace Test.Dialogs
                                     SelectObjekt,
                                     objekte,
                                     "Was ist das Objekt, um das es dir geht?");
-                //context.Wait(MessageReceived);
             }
-            //context.Call<object>(new DruckerDialog(), DruckerDialogDone);
+            else
+            {
+                Fertig(context);
+            }
+        }
+
+        protected async void Fertig(IDialogContext context)
+        {
+            // We have all infos, now let's go into the detailed dialog
+            if (context.ConversationData.Get<string>("objekt") == "drucker")
+            {
+                await context.PostAsync("Kannst du dein Drucker Problem näher beschreiben?");
+                context.Call<object>(new DruckerDialog(), DruckerDialogDone);
+            }
         }
 
         public static void getEntities(IDialogContext context, LuisResult result)
         {
             foreach (EntityRecommendation entity in result.Entities)
             {
-                context.ConversationData.SetValue<string>(entity.Type, entity.Entity);
+                context.ConversationData.SetValue<string>(entity.Type.ToLower(), entity.Entity.ToLower());
             }
         }
 
@@ -71,15 +82,19 @@ namespace Test.Dialogs
             switch (await objekt)
             {
                 case Objekt.Drucker:
+                    message = $"Ah versthe, Du bist hier wegen eines schlecht gelaunten Druckers.";
+                    context.ConversationData.SetValue<string>("objekt", "drucker");
+                    break;
                 case Objekt.Browser:
                 case Objekt.BAP:
-                    message = $"Du bist hier wegen: {objekt}";
+                    message = $"Das verstehe ich , aber dafür können wir leider nichts tun.";
                     break;
                 default:
                     message = "Hm...das kenne ich nicht.";
                     break;
             }
-            //await context.PostAsync(message);
+            await context.PostAsync(message);
+            await Fertig(context);
             //context.Wait(MessageReceived);
         }
 
